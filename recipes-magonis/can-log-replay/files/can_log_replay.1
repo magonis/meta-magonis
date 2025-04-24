@@ -1,0 +1,48 @@
+
+.\" Man page for can_log_replay
+.TH CAN_LOG_REPLAY 1 "2025-04-24" "Magonis" "User Commands"
+.SH NAME
+can_log_replay \\- Replay messages from a CAN log file onto a virtual CAN interface (vcan0)
+.SH SYNOPSIS
+Typically run as a systemd service:
+.br
+\\fBsystemctl start can-log-replay.service\\fR
+.sp
+For manual invocation (primarily for testing):
+.br
+\\fBcan_log_replay\\fR \\fI<log_file.txt>\\fR
+.SH DESCRIPTION
+\\fBcan_log_replay\\fR reads Controller Area Network (CAN) messages from a specified log file and sends them onto the \\fBvcan0\\fR network interface. It attempts to preserve the relative timing between messages recorded in the log file using a monotonic clock for precision. The application loops, restarting replay upon reaching the end of the file. Managed by \\fBcan-log-replay.service\\fR, depends on \\fBsetup-vcan0.service\\fR.
+.SH LOG FORMAT
+Expects lines containing a relative timestamp and CAN frame data:
+.sp
+\\fI[...] R HH:MM:SS.mmm <ID> <D1> <D2> ...\\fR
+.sp
+Where \\fIHH:MM:SS.mmm\\fR is relative time, \\fI<ID>\\fR is hex CAN ID, and \\fI<D1> ...\\fR are hex data bytes.
+.SH SERVICE
+Managed by \\fBcan-log-replay.service\\fR. Depends on \\fBsetup-vcan0.service\\fR.
+.br
+Check status: \\fBsystemctl status setup-vcan0.service can-log-replay.service\\fR
+.br
+View logs: \\fBjournalctl -u can-log-replay.service -f\\fR
+.SH FILES
+.TP
+\\fB/usr/bin/can_log_replay\\fR
+Executable.
+.TP
+\\fB/opt/can_logs/replay.log\\fR
+Default log file used by the service.
+.TP
+\\fB/lib/systemd/system/can-log-replay.service\\fR
+Main service unit.
+.TP
+\\fB/lib/systemd/system/setup-vcan0.service\\fR
+vcan0 setup service unit.
+.SH BUGS
+Report bugs via the issue tracker: https://github.com/magonis/meta-magonis/issues
+.SH AUTHOR
+Magonis <info@magonis.com>
+.SH SEE ALSO
+.BR ip (8),
+.BR systemctl (1),
+.BR journalctl (1)

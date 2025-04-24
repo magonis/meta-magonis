@@ -1,0 +1,15 @@
+
+[Unit]
+Description=Set up vcan0 interface for Magonis CAN Replay
+DefaultDependencies=no
+Before=network.target sysinit.target
+ConditionPathExists=!/sys/class/net/vcan0
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/sbin/ip link add dev vcan0 type vcan
+ExecStart=/sbin/ip link set up dev vcan0
+
+[Install]
+WantedBy=sysinit.target

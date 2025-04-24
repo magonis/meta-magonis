@@ -1,0 +1,19 @@
+
+[Unit]
+Description=CAN Log Replay Service for Magonis Devices
+Documentation=man:can_log_replay(1)
+Requires=setup-vcan0.service
+After=setup-vcan0.service network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/can_log_replay /opt/can_logs/replay.log
+Restart=on-failure
+RestartSec=5s
+KillSignal=SIGTERM
+TimeoutStopSec=10s
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

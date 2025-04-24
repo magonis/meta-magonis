@@ -1,0 +1,38 @@
+
+# Standard Yocto build artifacts
+/build/
+/tmp/
+/sstate-cache/
+/downloads/
+*.autosel
+*.lock
+
+# Local configuration files (if stored nearby)
+*local.conf*
+*bblayers.conf*
+
+# IDE files
+.idea/
+*.iml
+*.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Python cache/artefacts
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Backup files
+*~
+*.bak
+*.old
+*.orig
